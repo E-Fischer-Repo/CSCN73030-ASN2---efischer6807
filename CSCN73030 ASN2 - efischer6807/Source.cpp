@@ -9,12 +9,18 @@ using the Visual Studio IDE and C++.
 */
 
 
-/*
+/*	Step #3
 	Next you need to implement the main function to read the StudentData.txt file, create student objects and store them into a vector space. 
 	Create a struct STUDENT_DATA that contains the first and last names of the students. 
 	Each line read from the input file contains a first/last name pair separated by a comma. 
 	Parse the data, create an object and push that object into a vector space.
 	When you are finished you should have all the students listed in your vector space.
+	Commit and push your changes into the repository master.
+*/
+
+/*	Step #4
+	To help debug the loading of the file update the main function to print out all the student information to the screen. 
+	This functionality should only be performed if the application has been compiled in debug mode.
 	Commit and push your changes into the repository master.
 */
 
@@ -47,6 +53,10 @@ int main() {
 			//cout << "Last name: " << data.lastName << endl; //This code was used to test if the getline properly went past the delimiter
 			getline(fin, baseStudent.data.firstName);
 			//cout << "First name: " << data.firstName << endl; //This code was used to test if the getline properly went past the delimiter
+			#ifdef _DEBUG
+				cout << "Student name: " << baseStudent.data.firstName << "," << baseStudent.data.lastName << endl;
+			#endif
+
 			students.push_back(baseStudent);
 		}
 
