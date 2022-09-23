@@ -24,6 +24,17 @@ using the Visual Studio IDE and C++.
 	Commit and push your changes into the repository master.
 */
 
+/*	Step #5
+	Your next task is to add new functionality into the software, but in a way where it can be merged, but not executed unless running in a pre-release executable. 
+	This new functionality will add email addresses to your student input data. Use the following steps to create a pre-release version of your source code:
+	1. Create a branch in Github called PreRelease, commit and push it into your Github Repo
+	2. Update the main source code to print out a message to state if the application is running standard or pre-release source code
+	3. Update the main source code to read the StudentData_Emails.txt if compiled using a PRE_RELEASE compiler directive, commit and push into your Github Repo PreRelease branch
+	4. Perform a “Pull Request” on your PreRelease branch
+	a. Merge your PreRelease branch code into your master branch
+	5. In Visual Studio, resync your project with Github.
+*/
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -31,31 +42,53 @@ using the Visual Studio IDE and C++.
 
 using namespace std;
 
-
+#define PRE_RELEASE
 
 int main() {
-	string fileName = "StudentData.txt"; // the file to be opened
+	string fileName;
 	ifstream fin;
 	class Student {
 	public:
 		struct STUDENT_DATA { // Requested student struct, holding first and last names temporarily before pushing to the vector
 			string firstName;
 			string lastName;
+			string email;
 		}data;
 	};
 	vector<Student> students; // The vector that will dynamically allocate space for the students
+
+	#ifdef PRE_RELEASE
+		fileName = "StudentData_Emails.txt";
+		cout << "The application is running with pre-release source code" << endl;
+	#else
+		fileName = "StudentData.txt"; // the file to be opened
+		cout << "The application is running with standard source code" << endl;
+	#endif
 
 	fin.open(fileName); // opens the given file
 	if (fin.is_open()) {
 		while (!fin.eof()) {
 			Student baseStudent;
-			getline(fin, baseStudent.data.lastName, ',');
-			//cout << "Last name: " << data.lastName << endl; //This code was used to test if the getline properly went past the delimiter
-			getline(fin, baseStudent.data.firstName);
-			//cout << "First name: " << data.firstName << endl; //This code was used to test if the getline properly went past the delimiter
-			#ifdef _DEBUG
-				cout << "Student name: " << baseStudent.data.firstName << "," << baseStudent.data.lastName << endl;
+			#ifdef PRE_RELEASE
+				getline(fin, baseStudent.data.lastName, ',');
+				getline(fin, baseStudent.data.firstName, ',');
+				getline(fin, baseStudent.data.email);
+				#ifdef _DEBUG
+					cout << "Student name: " << baseStudent.data.firstName << ", " << baseStudent.data.lastName << ", " << baseStudent.data.email << endl;
+				#endif
+			#else
+				getline(fin, baseStudent.data.lastName, ',');
+				//cout << "Last name: " << data.lastName << endl; //This code was used to test if the getline properly went past the delimiter
+				getline(fin, baseStudent.data.firstName);
+				//cout << "First name: " << data.firstName << endl; //This code was used to test if the getline properly went past the delimiter
+				#ifdef _DEBUG
+					cout << "Student name: " << baseStudent.data.firstName << "," << baseStudent.data.lastName << endl;
+				#endif
 			#endif
+			
+			
+			
+			
 
 			students.push_back(baseStudent);
 		}
