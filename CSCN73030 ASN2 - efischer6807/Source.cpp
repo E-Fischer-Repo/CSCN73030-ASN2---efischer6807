@@ -24,6 +24,10 @@ using the Visual Studio IDE and C++.
 	Commit and push your changes into the repository master.
 */
 
+/*	Step #5
+
+*/
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
